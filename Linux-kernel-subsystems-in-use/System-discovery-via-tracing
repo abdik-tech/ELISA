@@ -1,0 +1,34 @@
+# H1 Discovering Linux kernel subsystems used by openAPS
+
+Work in progress - not for publication
+
+Discovering Linux kernel subsystem in use can be accomplished using Linux kernel features and commands.
+The goal is to gather the system state while OpenAPS workload is running ro determine which parts of
+the kernel is being used.
+
+The system state includes:
+
+- Device drivers
+- System calls
+- Sub-systems
+
+Linux kernel event tracing, ptrace, and user-space commands lsmod and strace commands
+will be employed to gather the system information.
+
+Plan of action:
+
+- Enable event tracing before starting the workload.
+- Extract system call numbers from trace and map them to system calls
+- Start OpenAPS application from strace
+- Run lsmod to gather module information
+
+OpenAPS employs setup scripts to launch OpenAPS applications. As a result using strace is not an option.
+We modifled OpenAPS setup script to enable event tracing
+
+Tools used:
+
+- System call dump:
+  sudo apt-get install auditd
+  ausyscall --dump > syscalls_dump.out
+- Supported system call check
+  Linux kernel scripts: scripts/checksyscalls.sh
